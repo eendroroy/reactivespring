@@ -15,7 +15,14 @@ repositories {
 	mavenCentral()
 }
 
+val local by extra(true)
+
 dependencies {
+	if (project.hasProperty("local")) {
+		dependencies {
+			implementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo")
+		}
+	}
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
