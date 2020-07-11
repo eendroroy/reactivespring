@@ -1,10 +1,11 @@
-package com.github.eendroroy.reactivespring.controller
 
-import com.github.eendroroy.reactivespring.controller.ReservationResource
 import com.github.eendroroy.reactivespring.model.Reservation
+import com.github.eendroroy.reactivespring.service.ReservationService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
+
 
 /**
  * @author indrajit
@@ -12,25 +13,25 @@ import reactor.core.publisher.Mono
 @RestController
 @RequestMapping(ReservationResource.ROOM_V_1_RESERVATION)
 @CrossOrigin
-class ReservationResource {
-    @GetMapping(path = ["{roomId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun reservationById(@PathVariable roomId: String): Mono<Reservation> {
-        return Mono.just(Reservation())
+class ReservationResource @Autowired constructor(private val reservationService: ReservationService) {
+    @GetMapping(path = ["{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun reservationById(@PathVariable id: String): Mono<Reservation?>? {
+        return reservationService.getReservation(id)
     }
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun createReservation(@RequestBody reservation: Reservation): Mono<Reservation> {
+    fun createReservation(@RequestBody reservation: Mono<Reservation>): Mono<Reservation?>? {
+        return reservationService.createReservation(reservation)
+    }
+
+    @PutMapping(path = ["{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateReservation(@PathVariable id: String, @RequestBody reservation: Reservation): Mono<Reservation> {
         return Mono.just(Reservation())
     }
 
-    @PutMapping(path = ["{roomId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateReservation(@PathVariable roomId: String, @RequestBody reservation: Reservation): Mono<Reservation> {
-        return Mono.just(Reservation())
-    }
-
-    @DeleteMapping(path = ["{roomId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun deleteReservation(@PathVariable roomId: String): Mono<Boolean> {
-        return Mono.just(true)
+    @DeleteMapping(path = ["{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun deleteReservation(@PathVariable id: String): Mono<Boolean?>? {
+        return reservationService.deleteReservation(id)
     }
 
     companion object {

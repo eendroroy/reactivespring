@@ -22,11 +22,11 @@ class ReservationServiceImpl @Autowired constructor(
         return reactiveMongoOperations.findById(id!!, Reservation::class.java)
     }
 
-    override fun createReservation(reservationMono: Mono<Reservation?>?): Mono<Reservation?>? {
+    override fun createReservation(reservationMono: Mono<Reservation>): Mono<Reservation?>? {
         return reactiveMongoOperations.save(reservationMono!!)
     }
 
-    override fun updateReservation(id: String?, reservationMono: Mono<Reservation?>?): Mono<Reservation?>? {
+    override fun updateReservation(id: String, reservationMono: Mono<Reservation>): Mono<Reservation?>? {
         // Upsert functionality
         //return reactiveMongoOperations.save(reservationMono);
 
@@ -42,7 +42,7 @@ class ReservationServiceImpl @Autowired constructor(
         }
     }
 
-    override fun deleteReservation(id: String?): Mono<Boolean?>? {
+    override fun deleteReservation(id: String): Mono<Boolean?>? {
         return reactiveMongoOperations.remove(
                 Query.query(Criteria.where("id").`is`(id)), Reservation::class.java)
                 .flatMap<Boolean> { deleteResult ->
