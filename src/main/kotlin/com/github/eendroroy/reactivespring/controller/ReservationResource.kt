@@ -1,4 +1,3 @@
-
 import com.github.eendroroy.reactivespring.model.Reservation
 import com.github.eendroroy.reactivespring.service.ReservationService
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,8 +24,8 @@ class ReservationResource @Autowired constructor(private val reservationService:
     }
 
     @PutMapping(path = ["{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateReservation(@PathVariable id: String, @RequestBody reservation: Reservation): Mono<Reservation> {
-        return Mono.just(Reservation())
+    fun updateReservation(@PathVariable id: String, @RequestBody reservation: Mono<Reservation>): Mono<Reservation?>? {
+        return reservationService.updateReservation(id, reservation)
     }
 
     @DeleteMapping(path = ["{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
