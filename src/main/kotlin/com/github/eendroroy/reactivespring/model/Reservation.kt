@@ -9,25 +9,10 @@ import java.time.LocalDate
  * @author indrajit
  */
 @Document
-class Reservation {
-    var roomNumber: Long? = null
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    var checkIn: LocalDate? = null
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    var checkOut: LocalDate? = null
-    var price: Int? = null
-
-    @Id
-    val id: String? = null
-
-    constructor() {}
-    constructor(roomNumber: Long?, checkIn: LocalDate?, checkOut: LocalDate?, price: Int?) {
-        this.roomNumber = roomNumber
-        this.checkIn = checkIn
-        this.checkOut = checkOut
-        this.price = price
-    }
-
-}
+data class Reservation(
+        var roomNumber: Long? = null,
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) var checkIn: LocalDate? = null,
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) var checkOut: LocalDate? = null,
+        var price: Int? = null,
+        @Id var id: String? = null
+)

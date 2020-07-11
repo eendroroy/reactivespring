@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-
 /**
  * @author indrajit
  */
@@ -24,7 +23,7 @@ class ReservationServiceImpl @Autowired constructor(
     }
 
     override fun createReservation(reservationMono: Mono<Reservation>): Mono<Reservation?>? {
-        return reactiveMongoOperations.save(reservationMono!!)
+        return reactiveMongoOperations.save(reservationMono)
     }
 
     override fun updateReservation(id: String, reservationMono: Mono<Reservation>): Mono<Reservation?>? {
@@ -32,7 +31,7 @@ class ReservationServiceImpl @Autowired constructor(
         //return reactiveMongoOperations.save(reservationMono);
 
         // Update just price
-        return reservationMono!!.flatMap { reservation ->
+        return reservationMono.flatMap { reservation ->
             reactiveMongoOperations.findAndModify(
                     Query.query(Criteria.where("id").`is`(id)),
                     Update.update("price", reservation!!.price), Reservation::class.java
