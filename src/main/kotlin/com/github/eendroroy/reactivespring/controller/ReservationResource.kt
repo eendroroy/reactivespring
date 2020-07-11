@@ -3,6 +3,7 @@ import com.github.eendroroy.reactivespring.service.ReservationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 
@@ -14,8 +15,13 @@ import reactor.core.publisher.Mono
 @CrossOrigin
 class ReservationResource @Autowired constructor(private val reservationService: ReservationService) {
     @GetMapping(path = ["{id}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun reservationById(@PathVariable id: String): Mono<Reservation?>? {
+    fun getReservationById(@PathVariable id: String): Mono<Reservation?>? {
         return reservationService.getReservation(id)
+    }
+
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun getAllReservationById(): Flux<Reservation?>? {
+        return reservationService.listAllReservations()
     }
 
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
